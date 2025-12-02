@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学生接龙对比工具</title>
+    <title>接龙对比工具</title>
     <style>
         * {
             margin: 0;
@@ -118,10 +118,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>学生接龙对比工具</h1>
+        <h1>接龙对比工具</h1>
         
         <div class="input-group">
-            <label for="allStudents">所有学生姓名（一行一个）：</label>
+            <label for="allStudents">所有成员姓名（一行一个）：</label>
             <textarea id="allStudents" placeholder="例如：
 张三
 李四
@@ -129,7 +129,7 @@
         </div>
         
         <div class="input-group">
-            <label for="joinedStudents">已接龙学生姓名（一行一个，可带序号）：</label>
+            <label for="joinedStudents">已接龙成员姓名（一行一个，可带序号）：</label>
             <textarea id="joinedStudents" placeholder="例如：
 1. 张三
 2 李四
@@ -138,12 +138,12 @@
         
         <div class="btn-group">
             <button id="compareBtn">对比</button>
-            <button id="clearAllBtn">清除全部学生</button>
-            <button id="clearJoinedBtn">清除已接龙学生</button>
+            <button id="clearAllBtn">清除全部名单</button>
+            <button id="clearJoinedBtn">清除已接龙名单</button>
         </div>
         
         <div class="result">
-            <h2>未接龙学生：</h2>
+            <h2>未接龙成员：</h2>
             <div id="resultArea">请点击对比按钮查看结果</div>
         </div>
     </div>
@@ -187,7 +187,7 @@
             
             // 显示结果
             if (unjoinedStudents.length === 0) {
-                resultArea.textContent = '所有学生都已接龙！';
+                resultArea.textContent = '所有人员都已接龙！';
             } else {
                 resultArea.textContent = unjoinedStudents.join('\n');
             }

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生接龙对比工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        #compareBtn {
+            background-color: #007aff;
+            color: white;
+        }
+        
+        #clearAllBtn {
+            background-color: #ff3b30;
+            color: white;
+        }
+        
+        #clearJoinedBtn {
+            background-color: #ff9500;
+            color: white;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .result {
+            margin-top: 20px;
+        }
+        
+        .result h2 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        #resultArea {
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            min-height: 80px;
+            background-color: #f9f9f9;
+            white-space: pre-line;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>学生接龙对比工具</h1>
+        
+        <div class="input-group">
+            <label for="allStudents">所有学生姓名（一行一个）：</label>
+            <textarea id="allStudents" placeholder="例如：
+张三
+李四
+王五"></textarea>
+        </div>
+        
+        <div class="input-group">
+            <label for="joinedStudents">已接龙学生姓名（一行一个，可带序号）：</label>
+            <textarea id="joinedStudents" placeholder="例如：
+1. 张三
+2 李四
+3-赵六"></textarea>
+        </div>
+        
+        <div class="btn-group">
+            <button id="compareBtn">对比</button>
+            <button id="clearAllBtn">清除全部学生</button>
+            <button id="clearJoinedBtn">清除已接龙学生</button>
+        </div>
+        
+        <div class="result">
+            <h2>未接龙学生：</h2>
+            <div id="resultArea">请点击对比按钮查看结果</div>
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const allStudentsText = document.getElementById('allStudents');
+        const joinedStudentsText = document.getElementById('joinedStudents');
+        const compareBtn = document.getElementById('compareBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const clearJoinedBtn = document.getElementById('clearJoinedBtn');
+        const resultArea = document.getElementById('resultArea');
+
+        // 处理姓名，去除序号和空格
+        function processName(name) {
+            // 移除开头的序号（数字、点、横线、空格等）
+            return name.replace(/^[\d\.\-\s]+/, '').trim();
+        }
+
+        // 解析文本框内容为数组
+        function parseTextarea(textarea) {
+            return textarea.value.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+        }
+
+        // 对比功能
+        compareBtn.addEventListener('click', () => {
+            // 获取所有学生和已接龙学生列表
+            const allStudents = parseTextarea(allStudentsText);
+            const joinedStudentsRaw = parseTextarea(joinedStudentsText);
+            
+            // 处理已接龙学生姓名（去序号）
+            const joinedStudents = joinedStudentsRaw.map(name => processName(name));
+            
+            // 找出未接龙的学生
+            const unjoinedStudents = allStudents.filter(student => {
+                const processedStudent = processName(student);
+                return !joinedStudents.includes(processedStudent);
+            });
+            
+            // 显示结果
+            if (unjoinedStudents.length === 0) {
+                resultArea.textContent = '所有学生都已接龙！';
+            } else {
+                resultArea.textContent = unjoinedStudents.join('\n');
+            }
+        });
+
+        // 清除全部
+        clearAllBtn.addEventListener('click', () => {
+            allStudentsText.value = '';
+            joinedStudentsText.value = '';
+            resultArea.textContent = '请点击对比按钮查看结果';
+        });
+
+        // 清除已接龙
+        clearJoinedBtn.addEventListener('click', () => {
+            joinedStudentsText.value = '';
+            resultArea.textContent = '请点击对比按钮查看结果';
+        });
+    </script>
+</body>
+</html>

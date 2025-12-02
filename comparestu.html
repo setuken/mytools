@@ -172,11 +172,11 @@
 
         // 对比功能
         compareBtn.addEventListener('click', () => {
-            // 获取所有学生和已接龙学生列表
+            // 获取所有成员和已接龙成员列表
             const allStudents = parseTextarea(allStudentsText);
             const joinedStudentsRaw = parseTextarea(joinedStudentsText);
             
-            // 处理已接龙学生姓名（去序号）
+            // 处理已接龙成员姓名（去序号）
             const joinedStudents = joinedStudentsRaw.map(name => processName(name));
             
             // 找出未接龙的学生
@@ -208,3 +208,4 @@
     </script>
 </body>
 </html>
+
